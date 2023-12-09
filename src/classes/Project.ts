@@ -1,0 +1,78 @@
+import { v4 as uuidv4 } from 'uuid'
+
+export type projectType = "Architectural" | "Structural" | "MEP Services"
+export type projectStatus = "Active" | "Pending" | "Finished"
+
+export interface IProject {
+    Name: string
+    Description: string
+    Status: projectStatus
+    Type: projectType
+    FinishDate: Date
+}
+
+export class Project implements IProject {
+    //parameters for IProject
+    Name: string
+    Description: string
+    Status: projectStatus
+    Type: projectType
+    FinishDate: Date
+
+    //parameters for Class internal for UI manipulation
+
+    ui: HTMLDivElement
+    cost: number = 0
+    progress: number = 0
+    id: string
+
+    constructor(data: IProject) {
+        /* this.Name = data.Name
+        this.Description = data.Description
+        this.Status = data.Status
+        this.Type = data.Type
+        this.FinishDate = data.FinishDate */ 
+                // OR a better way is to user for in loop like below
+        for(const key in data){
+            this[key] = data[key]
+        }        
+        this.id = uuidv4()
+        this.setUI() // Fn to create a UI element when form is filled
+
+    }
+
+    setUI() {
+        if (this.ui) { return }
+        this.ui = document.createElement("div")
+        this.ui.className = "project-card"
+        this.ui.innerHTML = `
+        
+        <div class="card-header">
+            <p class="project-icon"><span class="material-icons-round">check_box_outline_blank</span></p>
+            <div>
+                <h5>${this.Name}</h5>
+                <h6>${this.Description}</h6>
+            </div>
+        </div>
+        <div class="card-content">
+            <div class="card-property">
+                <p style="color: gray;">Status</p>
+                <p>${this.Status}</p>
+            </div>
+            <div class="card-property">
+                <p style="color: gray;">Type</p>
+                <p>${this.Type}</p>
+            </div>
+            <div class="card-property">
+                <p style="color: gray;">Cost</p>
+                <p>$${this.cost}</p>
+            </div>
+            <div class="card-property">
+                <p style="color: gray;">Estimated Progress</p>
+                <p>${this.progress}</p>
+            </div>
+        </div>
+    `
+
+    }
+}

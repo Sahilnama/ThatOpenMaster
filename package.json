@@ -1,0 +1,70 @@
+{
+  
+  "name": "thatopenmaster",
+  
+  "version": "1.0.0",
+  
+  "main": "index.js",
+  
+  "dependencies": {
+  
+    
+  "@cred/neopop-web": "^1.0.0",
+  
+    
+  "esbuild": "^0.19.8",
+  
+    
+  "nanoid": "^3.3.7",
+  
+    
+  "picocolors": "^1.0.0",
+  
+    
+  "postcss": "^8.4.31",
+  
+    
+  "react": "^18.2.0",
+  
+    
+  "react-dom": "^18.2.0",
+  
+    
+  "rollup": "^4.6.1",
+  
+    
+  "source-map-js": "^1.0.2",
+  
+    
+  "styled-components": "^5.3.11",
+  
+    
+  "uuid": "^9.0.1"
+  
+  },
+  
+  "scripts": {
+  
+    
+  "dev": "vite"
+  
+  },
+  
+  "keywords": [],
+  
+  "author": "",
+  
+  "license": "ISC",
+  
+  "description": "",
+  
+  "devDependencies": {
+  
+    
+  "typescript": "^5.3.2",
+  
+    
+  "vite": "^5.0.4"
+  
+  }
+}
