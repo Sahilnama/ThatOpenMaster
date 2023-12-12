@@ -31,6 +31,7 @@ export class ProjectsManager {
             if (!(projectsPage && detailsPage)) { return }
             projectsPage.style.display = "none"
             detailsPage.style.display = "flex"
+            this.setDetailsPage(project)
         })
 
         this.ui.append(project.ui)
@@ -38,6 +39,39 @@ export class ProjectsManager {
         return project
 
 
+    }
+
+    getInitials(name:string): string {
+        const nameArray = name.split(" ")
+        const firstNameIn = nameArray[0].charAt(0).toUpperCase()
+        const lastNameIn = nameArray[nameArray.length - 1].charAt(0).toUpperCase()
+        return firstNameIn + lastNameIn
+      }
+
+    setDetailsPage(project: Project) {
+        const detailsPage = document.getElementById("project-details")
+        if (!detailsPage) { return }
+        const name = detailsPage.querySelector("[data-project-info='name']")
+        const desc = detailsPage.querySelector("[data-project-info='desc']")
+        const initials = detailsPage.querySelector("[data-project-info='initials']")
+        const Cname = detailsPage.querySelector("[data-project-info='Cname']")
+        const Cdesc = detailsPage.querySelector("[data-project-info='Cdesc']")
+        const status = detailsPage.querySelector("[data-project-info='status']")
+        const type = detailsPage.querySelector("[data-project-info='type']")
+        const cost = detailsPage.querySelector("[data-project-info='cost']")
+        const finishDate = detailsPage.querySelector("[data-project-info='finish-date']")
+        const progress = detailsPage.querySelector("[data-project-info='progress']") //to be modified later
+
+        if (name) { name.textContent = project.Name }
+        if (desc) { desc.textContent = project.Description }
+        if (initials) { initials.textContent = this.getInitials(project.Name) }
+        if (Cname) { Cname.textContent = project.Name }
+        if (Cdesc) { Cdesc.textContent = project.Description }
+        if (status) { status.textContent = project.Status }
+        if (type) { type.textContent = project.Type }
+        if (cost) { cost.textContent = `${project.cost}`  }
+        if (finishDate) { finishDate.textContent = new Date(project.FinishDate).toDateString()}
+        if (progress) { progress.textContent = `${project.progress}` } //to be modified later
     }
 
     getProject(id: string) {

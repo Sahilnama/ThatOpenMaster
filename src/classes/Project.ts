@@ -21,25 +21,35 @@ export class Project implements IProject {
 
     //parameters for Class internal for UI manipulation
 
+    Initials: string
     ui: HTMLDivElement
     cost: number = 0
     progress: number = 0
     id: string
 
+    getInitial(name: string): string {
+        const nameArray = name.split(" ")
+        const firstNameIn = nameArray[0].charAt(0).toUpperCase()
+        const lastNameIn = nameArray[nameArray.length - 1].charAt(0).toUpperCase()
+        return firstNameIn + lastNameIn
+    }
+    
     constructor(data: IProject) {
         /* this.Name = data.Name
         this.Description = data.Description
         this.Status = data.Status
         this.Type = data.Type
-        this.FinishDate = data.FinishDate */ 
-                // OR a better way is to user for in loop like below
-        for(const key in data){
+        this.FinishDate = data.FinishDate */
+        // OR a better way is to user for in loop like below
+        for (const key in data) {
             this[key] = data[key]
-        }        
+        }
         this.id = uuidv4()
+        this.Initials = this.getInitial(this.Name)
         this.setUI() // Fn to create a UI element when form is filled
 
     }
+
 
     setUI() {
         if (this.ui) { return }
@@ -48,7 +58,7 @@ export class Project implements IProject {
         this.ui.innerHTML = `
         
         <div class="card-header">
-            <p class="project-icon"><span class="material-icons-round">check_box_outline_blank</span></p>
+            <p class="project-icon">${this.Initials}</p>
             <div>
                 <h5>${this.Name}</h5>
                 <h6>${this.Description}</h6>
