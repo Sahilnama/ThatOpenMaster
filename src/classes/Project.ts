@@ -33,7 +33,7 @@ export class Project implements IProject {
         const lastNameIn = nameArray[nameArray.length - 1].charAt(0).toUpperCase()
         return firstNameIn + lastNameIn
     }
-    
+
     constructor(data: IProject) {
         /* this.Name = data.Name
         this.Description = data.Description
@@ -50,15 +50,31 @@ export class Project implements IProject {
 
     }
 
+    pickColor() {
+
+        // Array containing colors 
+        const colors = [
+            '#06C270', '#772CB3', '#6A35FF',
+            '#EE4D37', '#F08D32', '#144CC7'
+        ];
+
+        // selecting random color 
+        var random_color = colors[(Math.floor(
+            Math.random() * colors.length))];
+
+            return random_color;
+    }
 
     setUI() {
         if (this.ui) { return }
         this.ui = document.createElement("div")
         this.ui.className = "project-card"
+        const bgc = this.pickColor();
+        
         this.ui.innerHTML = `
         
         <div class="card-header">
-            <p class="project-icon">${this.Initials}</p>
+            <p class="project-icon" style =" background-color: ${bgc};">${this.Initials} </p>
             <div>
                 <h5>${this.Name}</h5>
                 <h6>${this.Description}</h6>
@@ -83,6 +99,6 @@ export class Project implements IProject {
             </div>
         </div>
     `
-
+     
     }
 }

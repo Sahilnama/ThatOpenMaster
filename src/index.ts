@@ -38,7 +38,11 @@ const projectsManager = new ProjectsManager(projectsListUI)
 // Function to open project creation form
 const newProjectBtn = document.getElementById("new-project-btn")
 if (newProjectBtn) {
-    newProjectBtn.addEventListener("click", () => { showModal("new-project-modal") })
+    newProjectBtn.addEventListener("click", () => { showModal("new-project-modal") 
+    const defaulProject = document.getElementById("default-card") as HTMLElement // this is used to hide the default project card
+    defaulProject.style.display= "none"; // to be modified later if required
+})
+    
 }
 else {
     console.warn("New Project button not found")

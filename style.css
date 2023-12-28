@@ -139,7 +139,7 @@ header {
 }
 
 .project-icon {
-  background-color: orange;
+  /* background-color: orange; */
   border-radius: 2px;
   font-size: var(--font-xl);
   padding: 4px;
