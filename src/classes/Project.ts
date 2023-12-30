@@ -47,6 +47,7 @@ export class Project implements IProject {
         this.id = uuidv4()
         this.Initials = this.getInitial(this.Name)
         this.setUI() // Fn to create a UI element when form is filled
+        
 
     }
 

@@ -48,8 +48,8 @@
                         </div>
 
                         <div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
-                            <button style="background-color: transparent;">Cancel</button>
-                            <button style="background-color: rgb(18, 145, 18);">Accept</button>
+                            <button type="button" style="background-color: transparent;" onclick="deletProject(this.id)">Cancel</button>
+                            <button type="submit" style="background-color: rgb(18, 145, 18);">Accept</button>
                         </div>
                     </div>
                 </form>
@@ -132,7 +132,10 @@
                                 Give it a short name</p>
                             <p id="nameInUse"
                                 style="color: rgb(255, 0, 0); font-size: var(--font-sm); margin-top: 5px; display: none;">
-                                Name alredy in use</p>
+                                Name already in use</p>
+                            <p id="nameIsShort"
+                                style="color: rgb(255, 0, 0); font-size: var(--font-sm); margin-top: 5px; display: none;">
+                                Name is very short</p>
                         </div>
                         <div class="form-field-container">
                             <label><span class="material-icons-round">subject</span>Description</label>

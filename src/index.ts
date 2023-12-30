@@ -38,11 +38,12 @@ const projectsManager = new ProjectsManager(projectsListUI)
 // Function to open project creation form
 const newProjectBtn = document.getElementById("new-project-btn")
 if (newProjectBtn) {
-    newProjectBtn.addEventListener("click", () => { showModal("new-project-modal") 
-    const defaulProject = document.getElementById("default-card") as HTMLElement // this is used to hide the default project card
-    defaulProject.style.display= "none"; // to be modified later if required
-})
-    
+    newProjectBtn.addEventListener("click", () => {
+        showModal("new-project-modal")
+        const defaulProject = document.getElementById("default-card") as HTMLElement // this is used to hide the default project card
+        defaulProject.style.display = "none"; // to be modified later if required
+    })
+
 }
 else {
     console.warn("New Project button not found")
@@ -61,7 +62,9 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
     projectForm.addEventListener("submit", (e) => { // e is an argument which act as an object which can be used to call functions
         e.preventDefault()
         const formData = new FormData(projectForm)
-
+        const nameInUse = document.getElementById("nameInUse") as HTMLElement
+        const nameTip = document.getElementById("nameTip") as HTMLElement
+        const nameIsShort = document.getElementById("nameIsShort") as HTMLElement
         /* console.log("Name : ",formData.get("projectName"))
         console.log("Description : ",formData.get("projectDesc"))
         console.log("Type : ",formData.get("projectType"))
@@ -82,21 +85,35 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
             FinishDate: new Date(formData.get("projectDate") as string)
 
         }
-        const nameInUse = document.getElementById("nameInUse") as HTMLElement
-        const nameTip = document.getElementById("nameTip") as HTMLElement
+        
         try {
             const project = projectsManager.newProject(projectData)
             nameTip.style.display = "grid";
             nameInUse.style.display = "none";
+            nameIsShort.style.display = "none";
             projectForm.reset()
             closeModal("new-project-modal")
         } catch (err) {
-            nameInUse.innerHTML = `Name "${projectData.Name}" is alredy in use`
-            nameTip.style.display = "none";
-            nameInUse.style.display = "grid";
-        }
-    })
+            const error = err.stringify
+            if (err.message == "nameInUse") {
+                nameInUse.innerHTML = `Name "${projectData.Name}" is alredy in use`
+                nameTip.style.display = "none";
+                nameInUse.style.display = "grid";
+            } else if (err.message == "nameIsShort") {
+                nameIsShort.innerHTML = `Name "${projectData.Name}" is very short. Should be at least 5 characters`
+                nameTip.style.display = "none";
+                nameIsShort.style.display = "grid";
+            }
 
+
+        }
+    }
+    )
+    projectForm.addEventListener("reset", (x) => {
+        x.preventDefault()
+        projectForm.style.display = "none"
+        console.log(projectForm.style.display)
+    })
 } else {
     console.warn("No project form found.")
 
@@ -121,7 +138,7 @@ const projectsBtn = document.getElementById("projects-btn")
 projectsBtn?.addEventListener("click", () => {
     const projectsPage = document.getElementById("projects-page") as HTMLElement
     const detailsPage = document.getElementById("project-details") as HTMLElement
-    if (!(projectsPage && detailsPage))  return 
+    if (!(projectsPage && detailsPage)) return
     projectsPage.style.display = "flex"
     detailsPage.style.display = "none"
 })

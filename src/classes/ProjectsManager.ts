@@ -20,9 +20,15 @@ export class ProjectsManager {
         if (nameInUse) {
             console.log(nameInUse)
             errorCode = 1
-            throw new Error(`A project with name "${data.Name}" already exists`)
+            throw new Error(`nameInUse`)
             // return "nameInUse"
 
+        }
+
+        const nameIsShort = data.Name.length <= 5
+
+        if(nameIsShort){
+            throw new Error(`nameIsShort`)
         }
         const project = new Project(data)
         project.ui.addEventListener("click", () => {
