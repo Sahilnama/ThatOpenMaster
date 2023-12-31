@@ -215,6 +215,59 @@
             </div>
         </div>
         <div class="page" id="project-details" style="display: none;">
+            <dialog id="edit-project-modal">
+                <form id="edit-project-form">
+                    <h2>Edit Project Details</h2>
+                    <div class="input-list">
+                        <div class="form-field-container">
+                            <label><span class="material-icons-round">apartment</span>Name</label>
+                            <input name="projectName" type="text" placeholder="What's the name of your project?">
+                            <p id="nameTip"
+                                style="color: gray; font-size: var(--font-sm); margin-top: 5px; font-style: italic;">
+                                TIP:
+                                Give it a short name</p>
+                            <p id="nameInUse"
+                                style="color: rgb(255, 0, 0); font-size: var(--font-sm); margin-top: 5px; display: none;">
+                                Name already in use</p>
+                            <p id="nameIsShort"
+                                style="color: rgb(255, 0, 0); font-size: var(--font-sm); margin-top: 5px; display: none;">
+                                Name is very short</p>
+                        </div>
+                        <div class="form-field-container">
+                            <label><span class="material-icons-round">subject</span>Description</label>
+                            <textarea name="projectDesc" cols="30" rows="5"
+                                placeholder="Give your project a nice description! So people is jealous about it."></textarea>
+                        </div>
+                        <div class="form-field-container">
+                            <label><span class="material-icons-round">person</span>Type</label>
+                            <select name="projectType">
+                                <option>Architectural</option>
+                                <option>Structural</option>
+                                <option>MEPF Services</option>
+                            </select>
+                        </div>
+                        <div class="form-field-container">
+                            <label><span class="material-icons-round">work_history</span>Status</label>
+                            <select name="projectStatus">
+                                <option>Pending</option>
+                                <option>Active</option>
+                                <option>Finished</option>
+                            </select>
+                        </div>
+                        <div class="form-field-container">
+                            <label>
+                                <span class="material-icons-round">calendar_month</span>
+                                Finish Date
+                            </label>
+                            <input name="projectDate" type="date" name="finishDate"></input>
+                        </div>
+                        <div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
+                            <button style="background-color: transparent;">Cancel</button>
+                            <button style="background-color: rgb(18, 145, 18);">Accept</button>
+                        </div>
+                    </div>
+                </form>
+            </dialog>
             <header>
                 <div>
                     <h2 data-project-info = "name">Hospital Center</h2>
@@ -226,7 +279,7 @@
                     <div class="dashboard-card">
                         <div class="dashboard-card-header">
                             <div data-project-info = "initials" class="project-dp">HC</div>
-                            <button>Edit</button>
+                            <button id="edit-projects-btn">Edit</button>
                         </div>
                         <div class="dashboard-project-info" style="display: block;">
                             <h5 data-project-info = "Cname" >Hospital Center</h5>
@@ -253,6 +306,7 @@
                         </div>
                         <div class="dashboard-progress">
                             <div data-project-info = "progress" class="progress-fill">25%</div>
+                            <div data-project-info = "id" style="display: none;"></div>
 
                         </div>
 

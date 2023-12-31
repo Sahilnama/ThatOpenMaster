@@ -44,10 +44,23 @@ export class Project implements IProject {
         for (const key in data) {
             this[key] = data[key]
         }
+
+        //Choosing default date one year from today in case user do not provide any date.
+
+        const defaultDate = new Date();
+        defaultDate.setFullYear(defaultDate.getFullYear() + 1)
+        const dateInput = data.FinishDate.toDateString()
+
+        if (dateInput == "Invalid Date") {
+            // If not, set the value to the default date
+            this.FinishDate = defaultDate
+            console.log(data.FinishDate)
+        }
+
         this.id = uuidv4()
         this.Initials = this.getInitial(this.Name)
         this.setUI() // Fn to create a UI element when form is filled
-        
+
 
     }
 
@@ -63,7 +76,7 @@ export class Project implements IProject {
         var random_color = colors[(Math.floor(
             Math.random() * colors.length))];
 
-            return random_color;
+        return random_color;
     }
 
     setUI() {
@@ -71,7 +84,7 @@ export class Project implements IProject {
         this.ui = document.createElement("div")
         this.ui.className = "project-card"
         const bgc = this.pickColor();
-        
+
         this.ui.innerHTML = `
         
         <div class="card-header">
@@ -98,8 +111,11 @@ export class Project implements IProject {
                 <p style="color: gray;">Estimated Progress</p>
                 <p>${this.progress}</p>
             </div>
+            <div class="card-id" style="color: gray; display: none">
+                 <p>${this.id}</p>
+            </div>
         </div>
     `
-     
+
     }
 }

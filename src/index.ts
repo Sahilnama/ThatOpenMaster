@@ -1,5 +1,6 @@
 import { IProject, projectStatus, projectType } from "./classes/Project"
 import { ProjectsManager } from "./classes/ProjectsManager"
+// import { ProjectdetailsManager } from "./classes/ProjectsManager"
 
 
 /* const   showModal = () =>{
@@ -14,6 +15,7 @@ function showModal(id: string) {
     //if modal exists and is of type dialog then only showModal func will run to prevent app from breaking.
     if (modal && modal instanceof HTMLDialogElement) {
         modal.showModal()
+        // console.log("showModal is called")
     } else {
         console.warn("modal not found. ID ", id)
     }
@@ -26,6 +28,7 @@ function closeModal(id: string) {
     //if modal exists and is of type dialog then only showModal func will run to prevent app from breaking.
     if (modal && modal instanceof HTMLDialogElement) {
         modal.close()
+        // console.log("closeModal is called")
     } else {
         console.warn("modal not found. ID ", id)
     }
@@ -40,11 +43,11 @@ const newProjectBtn = document.getElementById("new-project-btn")
 if (newProjectBtn) {
     newProjectBtn.addEventListener("click", () => {
         showModal("new-project-modal")
-        const defaulProject = document.getElementById("default-card") as HTMLElement // this is used to hide the default project card
-        defaulProject.style.display = "none"; // to be modified later if required
+        const defaultProject = document.getElementById("default-card") as HTMLElement // this is used to hide the default project card
+        defaultProject.style.display = "none"; // to be modified later if required
     })
 
-}
+} 
 else {
     console.warn("New Project button not found")
 }
@@ -94,7 +97,6 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
             projectForm.reset()
             closeModal("new-project-modal")
         } catch (err) {
-            const error = err.stringify
             if (err.message == "nameInUse") {
                 nameInUse.innerHTML = `Name "${projectData.Name}" is alredy in use`
                 nameTip.style.display = "none";
@@ -109,11 +111,7 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
         }
     }
     )
-    projectForm.addEventListener("reset", (x) => {
-        x.preventDefault()
-        projectForm.style.display = "none"
-        console.log(projectForm.style.display)
-    })
+    // When cancel button is pressed it is still working as submit for form. How to solve this?
 } else {
     console.warn("No project form found.")
 
@@ -130,6 +128,19 @@ const importProjectsBtn = document.getElementById("import-projects-btn")
 if (importProjectsBtn) {
     importProjectsBtn.addEventListener("click", () => {
         projectsManager.importFromJSON()
+    })
+}
+
+const editProjectsBtn = document.getElementById("edit-projects-btn")
+if (editProjectsBtn) {
+    editProjectsBtn.addEventListener("click", () => {
+        const form = document.getElementById("edit-project-form")
+        showModal("edit-project-modal")
+        const currentProject = projectsManager.editProject()
+        console.log(form)
+        // console.log(currentProject)
+        
+         
     })
 }
 

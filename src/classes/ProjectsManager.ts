@@ -5,7 +5,7 @@ export class ProjectsManager {
 
     list: Project[] = []
     ui: HTMLElement
-
+    currentProject: Project;
     constructor(container: HTMLElement) {
         this.ui = container
     }
@@ -27,7 +27,7 @@ export class ProjectsManager {
 
         const nameIsShort = data.Name.length <= 5
 
-        if(nameIsShort){
+        if (nameIsShort) {
             throw new Error(`nameIsShort`)
         }
         const project = new Project(data)
@@ -47,12 +47,13 @@ export class ProjectsManager {
 
     }
 
-    getInitials(name:string): string {
+
+    getInitials(name: string): string {
         const nameArray = name.split(" ")
         const firstNameIn = nameArray[0].charAt(0).toUpperCase()
         const lastNameIn = nameArray[nameArray.length - 1].charAt(0).toUpperCase()
         return firstNameIn + lastNameIn
-      }
+    }
 
     setDetailsPage(project: Project) {
         const detailsPage = document.getElementById("project-details")
@@ -67,6 +68,7 @@ export class ProjectsManager {
         const cost = detailsPage.querySelector("[data-project-info='cost']")
         const finishDate = detailsPage.querySelector("[data-project-info='finish-date']")
         const progress = detailsPage.querySelector("[data-project-info='progress']") //to be modified later
+        const id = detailsPage.querySelector("[data-project-info='id']") 
 
         if (name) { name.textContent = project.Name }
         if (desc) { desc.textContent = project.Description }
@@ -75,9 +77,10 @@ export class ProjectsManager {
         if (Cdesc) { Cdesc.textContent = project.Description }
         if (status) { status.textContent = project.Status }
         if (type) { type.textContent = project.Type }
-        if (cost) { cost.textContent = `${project.cost}`  }
-        if (finishDate) { finishDate.textContent = new Date(project.FinishDate).toDateString()}
+        if (cost) { cost.textContent = `${project.cost}` }
+        if (finishDate) { finishDate.textContent = new Date(project.FinishDate).toDateString() }
         if (progress) { progress.textContent = `${project.progress}` } //to be modified later
+        if (id) { id.textContent = `${project.id}` } 
     }
 
     getProject(id: string) {
@@ -103,7 +106,12 @@ export class ProjectsManager {
 
         this.list = remaining
     }
-
+    
+    editProject() {
+        const currentProject = this.ui
+        // console.log(currentProject.innerHTML)
+        return currentProject;
+    }
     totalProjectCost() {
         const totalCost: number = this.list.reduce(
             (sumOfCost, currentProject) => sumOfCost + currentProject.cost,
@@ -157,5 +165,14 @@ export class ProjectsManager {
         input.click()
     }
 
-    
-}   
+
+}
+
+/* export class ProjectdetailsManager {
+
+    ui: HTMLElement
+    editProject() {
+        console.log(this.ui)
+
+    }
+} */
