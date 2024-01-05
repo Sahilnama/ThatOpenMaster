@@ -90,7 +90,7 @@ export class Project implements IProject {
         <div class="card-header">
             <p class="project-icon" style =" background-color: ${bgc};">${this.Initials} </p>
             <div>
-                <h5>${this.Name}</h5>
+                <h5 id="" >${this.Name}</h5>
                 <h6>${this.Description}</h6>
             </div>
         </div>
@@ -118,4 +118,46 @@ export class Project implements IProject {
     `
 
     }
+
+    // setFormUI() {
+    //     if (this.ui) { return }
+    //     this.ui = document.createElement("div")
+    //     this.ui.className = "project-card"
+    //     const bgc = this.pickColor();
+
+    //     this.ui.innerHTML = `
+        
+    //     <div class="card-header">
+    //         <p class="project-icon" style =" background-color: ${bgc};">${this.Initials} </p>
+    //         <div>
+    //             <h5>${this.Name}</h5>
+    //             <h6>${this.Description}</h6>
+    //         </div>
+    //     </div>
+    //     <div class="card-content">
+    //         <div class="card-property">
+    //             <p style="color: gray;">Status</p>
+    //             <p>${this.Status}</p>
+    //         </div>
+    //         <div class="card-property">
+    //             <p style="color: gray;">Type</p>
+    //             <p>${this.Type}</p>
+    //         </div>
+    //         <div class="card-property">
+    //             <p style="color: gray;">Cost</p>
+    //             <p>$${this.cost}</p>
+    //         </div>
+    //         <div class="card-property">
+    //             <p style="color: gray;">Estimated Progress</p>
+    //             <p>${this.progress}</p>
+    //         </div>
+    //         <div class="card-id" style="color: gray; display: none">
+    //              <p>${this.id}</p>
+    //         </div>
+    //     </div>
+    // `
+
+    // }
+
+    
 }

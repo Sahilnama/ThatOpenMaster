@@ -96,7 +96,7 @@ export class ProjectsManager {
         return project
     }
 
-    deletProject(id: string) {
+    deleteProject(id: string) {
         const project = this.getProject(id)
         if (!project) { return }
         project.ui.remove()
@@ -112,6 +112,23 @@ export class ProjectsManager {
         // console.log(currentProject.innerHTML)
         return currentProject;
     }
+
+    /* setEditForm(){
+        const editForm = document.getElementById("edit-project-modal")
+        if(!editForm){ return}
+        
+        const name = editForm.querySelector(
+            "[data-edit-project-info='Ename']"
+          ) as HTMLInputElement;
+          console.log(name)
+          const currentProject = this.ui
+          console.log(currentProject)
+          if (name) {
+            name.value = this.currentProject.Name
+            console.log(name)
+          }
+    } */
+
     totalProjectCost() {
         const totalCost: number = this.list.reduce(
             (sumOfCost, currentProject) => sumOfCost + currentProject.cost,

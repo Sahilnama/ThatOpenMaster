@@ -38,16 +38,23 @@ function closeModal(id: string) {
 const projectsListUI = document.getElementById("projects-list") as HTMLElement
 const projectsManager = new ProjectsManager(projectsListUI)
 
+const defaultProjectData: IProject = {
+    Name: "Sample Project",
+    Description: "This will be deleted when you create a new project",
+    Type: "MEP Services",
+    Status: "Active",
+    FinishDate: new Date()
+
+}
+const defaultProject = projectsManager.newProject(defaultProjectData)
 // Function to open project creation form
 const newProjectBtn = document.getElementById("new-project-btn")
 if (newProjectBtn) {
     newProjectBtn.addEventListener("click", () => {
         showModal("new-project-modal")
-        const defaultProject = document.getElementById("default-card") as HTMLElement // this is used to hide the default project card
-        defaultProject.style.display = "none"; // to be modified later if required
     })
 
-} 
+}
 else {
     console.warn("New Project button not found")
 }
@@ -61,13 +68,14 @@ else {
 };  part of code comment from line 41-51*/
 
 const projectForm = document.getElementById("new-project-form")
+const nameInUse = document.getElementById("nameInUse") as HTMLElement
+const nameTip = document.getElementById("nameTip") as HTMLElement
+const nameIsShort = document.getElementById("nameIsShort") as HTMLElement
 if (projectForm && projectForm instanceof HTMLFormElement) {
     projectForm.addEventListener("submit", (e) => { // e is an argument which act as an object which can be used to call functions
         e.preventDefault()
         const formData = new FormData(projectForm)
-        const nameInUse = document.getElementById("nameInUse") as HTMLElement
-        const nameTip = document.getElementById("nameTip") as HTMLElement
-        const nameIsShort = document.getElementById("nameIsShort") as HTMLElement
+
         /* console.log("Name : ",formData.get("projectName"))
         console.log("Description : ",formData.get("projectDesc"))
         console.log("Type : ",formData.get("projectType"))
@@ -88,7 +96,7 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
             FinishDate: new Date(formData.get("projectDate") as string)
 
         }
-        
+
         try {
             const project = projectsManager.newProject(projectData)
             nameTip.style.display = "grid";
@@ -117,6 +125,20 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
 
 }
 
+const closeForm = document.getElementById("cancel-btn")
+if (closeForm && closeForm instanceof HTMLElement) {
+    closeForm.addEventListener("click", () => {
+        closeModal("new-project-modal")
+        // closeModal("edit-project-modal")
+        if (projectForm && projectForm instanceof HTMLFormElement) {
+            nameTip.style.display = "grid";
+            nameInUse.style.display = "none";
+            nameIsShort.style.display = "none";
+            projectForm.reset()
+        }
+    })
+}
+
 const exportProjectsBtn = document.getElementById("export-projects-btn")
 if (exportProjectsBtn) {
     exportProjectsBtn.addEventListener("click", () => {
@@ -137,10 +159,13 @@ if (editProjectsBtn) {
         const form = document.getElementById("edit-project-form")
         showModal("edit-project-modal")
         const currentProject = projectsManager.editProject()
+        // console.log(currentProject.getAttribute("name"))
+        console.log(currentProject)
         console.log(form)
+        projectsManager.setEditForm()
         // console.log(currentProject)
-        
-         
+
+
     })
 }
 

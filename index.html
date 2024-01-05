@@ -166,8 +166,8 @@
                             <input name="projectDate" type="date" name="finishDate"></input>
                         </div>
                         <div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
-                            <button style="background-color: transparent;">Cancel</button>
-                            <button style="background-color: rgb(18, 145, 18);">Accept</button>
+                            <button id="cancel-btn" type="button" style="background-color: transparent;">Cancel</button>
+                            <button type="submit" style="background-color: rgb(18, 145, 18);">Accept</button>
                         </div>
                     </div>
                 </form>
@@ -185,33 +185,7 @@
 
             </header>
             <div id="projects-list">
-                <div id="default-card" class="project-card">
-                    <div class="card-header" id="default-project">
-                        <p class="project-icon">HC</p>
-                        <div>
-                            <h5>Sample Name</h5>
-                            <h6>This will be deleted when you create a new project</h6>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-property">
-                            <p style="color: gray;">Status</p>
-                            <p>Active</p>
-                        </div>
-                        <div class="card-property">
-                            <p style="color: gray;">Role</p>
-                            <p>Active</p>
-                        </div>
-                        <div class="card-property">
-                            <p style="color: gray;">Cost</p>
-                            <p>Active</p>
-                        </div>
-                        <div class="card-property">
-                            <p style="color: gray;">Estimated Progress</p>
-                            <p>Active</p>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
         <div class="page" id="project-details" style="display: none;">
@@ -221,7 +195,7 @@
                     <div class="input-list">
                         <div class="form-field-container">
                             <label><span class="material-icons-round">apartment</span>Name</label>
-                            <input name="projectName" type="text" placeholder="What's the name of your project?">
+                            <input data-edit-project-info="Ename" name="projectName" type="text" placeholder="What's the name of your project?">
                             <p id="nameTip"
                                 style="color: gray; font-size: var(--font-sm); margin-top: 5px; font-style: italic;">
                                 TIP:
@@ -235,12 +209,12 @@
                         </div>
                         <div class="form-field-container">
                             <label><span class="material-icons-round">subject</span>Description</label>
-                            <textarea name="projectDesc" cols="30" rows="5"
+                            <textarea data-edit-project-info="desc" name="projectDesc" cols="30" rows="5"
                                 placeholder="Give your project a nice description! So people is jealous about it."></textarea>
                         </div>
                         <div class="form-field-container">
                             <label><span class="material-icons-round">person</span>Type</label>
-                            <select name="projectType">
+                            <select data-edit-project-info="type" name="projectType">
                                 <option>Architectural</option>
                                 <option>Structural</option>
                                 <option>MEPF Services</option>
@@ -248,7 +222,7 @@
                         </div>
                         <div class="form-field-container">
                             <label><span class="material-icons-round">work_history</span>Status</label>
-                            <select name="projectStatus">
+                            <select data-edit-project-info="status" name="projectStatus">
                                 <option>Pending</option>
                                 <option>Active</option>
                                 <option>Finished</option>
@@ -259,11 +233,11 @@
                                 <span class="material-icons-round">calendar_month</span>
                                 Finish Date
                             </label>
-                            <input name="projectDate" type="date" name="finishDate"></input>
+                            <input data-edit-project-info="finish-date" name="projectDate" type="date" name="finishDate"></input>
                         </div>
                         <div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
-                            <button style="background-color: transparent;">Cancel</button>
-                            <button style="background-color: rgb(18, 145, 18);">Accept</button>
+                            <button id="cancel-btn" type="button" style="background-color: transparent;">Cancel</button>
+                            <button type="submit" style="background-color: rgb(18, 145, 18);">Accept</button>
                         </div>
                     </div>
                 </form>
