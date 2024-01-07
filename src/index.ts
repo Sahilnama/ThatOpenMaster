@@ -52,6 +52,7 @@ const newProjectBtn = document.getElementById("new-project-btn")
 if (newProjectBtn) {
     newProjectBtn.addEventListener("click", () => {
         showModal("new-project-modal")
+        
     })
 
 }
@@ -119,7 +120,7 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
         }
     }
     )
-    // When cancel button is pressed it is still working as submit for form. How to solve this?
+    
 } else {
     console.warn("No project form found.")
 
@@ -156,16 +157,13 @@ if (importProjectsBtn) {
 const editProjectsBtn = document.getElementById("edit-projects-btn")
 if (editProjectsBtn) {
     editProjectsBtn.addEventListener("click", () => {
-        const form = document.getElementById("edit-project-form")
+        
         showModal("edit-project-modal")
-        const currentProject = projectsManager.editProject()
-        // console.log(currentProject.getAttribute("name"))
-        console.log(currentProject)
-        console.log(form)
-        projectsManager.setEditForm()
-        // console.log(currentProject)
-
-
+        document.addEventListener('DOMContentLoaded', function () {
+            // Call your function here or bind it to a specific event
+            projectsManager.setEditForm();
+        })
+        projectsManager.setEditForm();
     })
 }
 

@@ -1,13 +1,16 @@
 import { IProject, Project } from "./Project"
+import { v4 as uuidv4 } from "uuid";
 let errorCode = 0;
 
 export class ProjectsManager {
 
     list: Project[] = []
+    id: string
     ui: HTMLElement
     currentProject: Project;
     constructor(container: HTMLElement) {
         this.ui = container
+        this.id = uuidv4()
     }
 
     newProject(data: IProject) {
@@ -107,27 +110,48 @@ export class ProjectsManager {
         this.list = remaining
     }
     
-    editProject() {
-        const currentProject = this.ui
-        // console.log(currentProject.innerHTML)
-        return currentProject;
-    }
+    setEditForm() {
+        const editForm = document.getElementById("edit-project-form");
+        const currentProject = document.querySelector(".main-page-content") as HTMLElement;
+    
+        if (!editForm || !currentProject) {
+            return;
+        }
+        // all the form parameters
+        const name = editForm.querySelector("[data-edit-project-info='name']") as HTMLInputElement;
+        const desc = editForm.querySelector("[data-edit-project-info='desc']") as HTMLInputElement;
+        const type = editForm.querySelector("[data-edit-project-info='type']") as HTMLInputElement;
+        const status = editForm.querySelector("[data-edit-project-info='status']") as HTMLInputElement;
+        const finishDate = editForm.querySelector("[data-edit-project-info='finish-date']") as HTMLInputElement;
 
-    /* setEditForm(){
-        const editForm = document.getElementById("edit-project-modal")
-        if(!editForm){ return}
+        //all current project parameters
+        const projectName = currentProject.querySelector("[data-project-info='Cname']") as HTMLElement;
+        const projectDesc = currentProject.querySelector("[data-project-info='Cdesc']") as HTMLElement;
+        const projectType = currentProject.querySelector("[data-project-info='type']") as HTMLElement;
+        const projectStatus = currentProject.querySelector("[data-project-info='status']") as HTMLElement;
+        const projectDate = currentProject.querySelector("[data-project-info='Cname']") as HTMLElement;
+
+        console.log(editForm);
+        console.log(currentProject);
+        console.log(projectName.textContent);
+        console.log(projectDesc.textContent);
+        console.log(projectType);
+    
+        if (name && projectName) {
+            name.value = projectName.textContent as string;
+        }
+        if (desc && projectDesc) {
+            desc.textContent = projectDesc.textContent as string;
+            console.log("working")
+        }
+        // /* if (type && projectType) {
+        //     type.innerText = projectType.innerText 
+        //     console.log(type);
+        // } */
+
+        //Other parameters neede to be set later for editing.
         
-        const name = editForm.querySelector(
-            "[data-edit-project-info='Ename']"
-          ) as HTMLInputElement;
-          console.log(name)
-          const currentProject = this.ui
-          console.log(currentProject)
-          if (name) {
-            name.value = this.currentProject.Name
-            console.log(name)
-          }
-    } */
+    }
 
     totalProjectCost() {
         const totalCost: number = this.list.reduce(
@@ -188,8 +212,29 @@ export class ProjectsManager {
 /* export class ProjectdetailsManager {
 
     ui: HTMLElement
+    constructor(container: HTMLElement) {
+        this.ui = container
+    }
     editProject() {
         console.log(this.ui)
 
+    }
+
+    setEditForm(){
+        const editForm = document.getElementById("edit-project-modal")
+        const projectsListUI = this.ui
+        const currentProjectroject = projectsListUI
+        if(!editForm){ return}
+        
+        const name = editForm.querySelector(
+            "[data-edit-project-info='Ename']"
+          ) as HTMLInputElement;
+          console.log(editForm)
+        
+        //   console.log(currentProject?.querySelector("data-project-info='Cname'"))
+          if (name) {
+            // name.value = currentProject?.getAttribute("data-project-info='Cname'") as string
+            console.log(projectsListUI)
+          }
     }
 } */
