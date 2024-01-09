@@ -1,4 +1,4 @@
-import { IProject, Project } from "./Project"
+import { IProject, Project, projectStatus, projectType } from "./Project"
 let errorCode = 0;
 
 export class ProjectsManager {
@@ -38,6 +38,7 @@ export class ProjectsManager {
             projectsPage.style.display = "none"
             detailsPage.style.display = "flex"
             this.setDetailsPage(project)
+            this.currentProject = project
         })
 
         this.ui.append(project.ui)
@@ -109,7 +110,8 @@ export class ProjectsManager {
     
     editProject() {
         const currentProject = this.ui
-        // console.log(currentProject.innerHTML)
+        console.log(currentProject)
+
         return currentProject;
     }
     totalProjectCost() {
@@ -166,7 +168,89 @@ export class ProjectsManager {
     }
 
 
+    setupEditProjectModal () {
+        const editModal = document.getElementById("edit-project-modal")
+        if (!editModal) {return}
+        console.log("Selecting name...")
+        console.log(editModal.querySelector("[data-edit-project-info='name']"))
+        const name = editModal.querySelector("[data-edit-project-info='name']") as HTMLInputElement
+        if (name) { name.value =  this.currentProject.Name }
+        const description = editModal.querySelector("[data-edit-project-info='description']") as HTMLInputElement
+        if (description) { description.value =  this.currentProject.Description }
+
+        const status = editModal.querySelector("[data-edit-project-info='status']") as HTMLInputElement
+        if (status) { status.value = this.currentProject.Status }
+
+        const userRole = editModal.querySelector("[data-edit-project-info='projectType']") as HTMLInputElement
+        if (userRole) { userRole.value = this.currentProject.Type }
+
+        const progress = editModal.querySelector("[data-edit-project-info='progress']") as HTMLInputElement
+        if (progress) { progress.value = this.currentProject.progress*100 + '%' }
+
+        
+
+        const finishDate = editModal.querySelector("[data-edit-project-info='finishDate']") as HTMLInputElement
+        if (finishDate) { finishDate.value = (new Date(this.currentProject.FinishDate)).toLocaleDateString('en-CA', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          })}
+
+        
+        const cost = editModal.querySelector("[data-edit-project-info='cost']") as HTMLInputElement
+        if (cost) { 
+            cost.textContent = '$ ' + this.currentProject.cost
+            cost.value = '$ ' + this.currentProject.cost 
+        }
+
+        
+        const editProjectForm = document.getElementById("edit-project-form")
+        if (editProjectForm && editProjectForm instanceof HTMLFormElement) {
+            console.log("Listening for submit...")
+            editProjectForm.addEventListener("submit", (e) => {
+
+                console.log("event listener fired")
+                e.preventDefault()
+                const editFormData = new FormData(editProjectForm)
+                console.log("Cost:")
+
+                console.log( editFormData.get("cost"))
+                try {
+                const projectData: IProject = {
+                    Name: editFormData.get("Name") as string,
+                    Description: editFormData.get("Description") as string,
+                    Status: editFormData.get("Status") as projectStatus,
+                    Type: editFormData.get("Type") as projectType,
+                    FinishDate: new Date(editFormData.get("finishDate") as string),
+                
+        
+
+                  };
+
+                
+                    this.currentProject.updateProject(projectData)
+                    this.currentProject.replaceProjectById(this.list)
+                    this.setDetailsPage(this.currentProject)
+
+
+                }
+                catch (err) {
+                    alert(err)
+                }
+                
+            })
+        }
+
+
+    }
+
+
+
 }
+
+
+
+
 
 /* export class ProjectdetailsManager {
 

@@ -221,7 +221,7 @@
                     <div class="input-list">
                         <div class="form-field-container">
                             <label><span class="material-icons-round">apartment</span>Name</label>
-                            <input name="projectName" type="text" placeholder="What's the name of your project?">
+                            <input data-edit-project-info='name' name="projectName" type="text" placeholder="What's the name of your project?">
                             <p id="nameTip"
                                 style="color: gray; font-size: var(--font-sm); margin-top: 5px; font-style: italic;">
                                 TIP:
@@ -235,11 +235,11 @@
                         </div>
                         <div class="form-field-container">
                             <label><span class="material-icons-round">subject</span>Description</label>
-                            <textarea name="projectDesc" cols="30" rows="5"
+                            <textarea data-edit-project-info='description' name="projectDesc" cols="30" rows="5"
                                 placeholder="Give your project a nice description! So people is jealous about it."></textarea>
                         </div>
                         <div class="form-field-container">
-                            <label><span class="material-icons-round">person</span>Type</label>
+                            <label><span data-edit-project-info='projectType' class="material-icons-round">person</span>Type</label>
                             <select name="projectType">
                                 <option>Architectural</option>
                                 <option>Structural</option>
@@ -248,7 +248,7 @@
                         </div>
                         <div class="form-field-container">
                             <label><span class="material-icons-round">work_history</span>Status</label>
-                            <select name="projectStatus">
+                            <select name="projectStatus" data-edit-project-info='status'>
                                 <option>Pending</option>
                                 <option>Active</option>
                                 <option>Finished</option>
