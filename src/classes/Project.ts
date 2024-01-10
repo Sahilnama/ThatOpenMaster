@@ -34,6 +34,28 @@ export class Project implements IProject {
         return firstNameIn + lastNameIn
     }
 
+    updateProject(data: IProject) {
+    
+        for (const key in data) {
+          this[key] = data[key]
+        }
+        this.Initials = this.getInitial(this.Name)
+        this.setUI
+    }
+
+    replaceProjectById(projectList) {
+        const index = projectList.findIndex(project => project.id === this.id);
+      
+        if (index !== -1) {
+          // If the project with the given id is found, replace it with the new project
+          projectList[index] = this;
+          projectList[index].setUI()
+        } else {
+          // If the project is not found, you may want to push the new project to the list
+          //projectList.push(newProject);
+        }
+    }
+
     constructor(data: IProject) {
         /* this.Name = data.Name
         this.Description = data.Description
