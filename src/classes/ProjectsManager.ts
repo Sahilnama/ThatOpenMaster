@@ -143,6 +143,7 @@ export class ProjectsManager {
         if (desc && projectDesc) {
             desc.textContent = projectDesc.textContent as string;
             console.log("working")
+            console.log(this.ui)
 
         }
         // /* if (type && projectType) {

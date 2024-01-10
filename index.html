@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
 </head>
-
 <body>
     <aside id="sidebar">
         <img src="./assets/company-logo.svg" alt="ConstructionCompany" width="200px">
@@ -46,7 +44,6 @@
                                 <option>Member</option>
                             </select>
                         </div>
-
                         <div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
                             <button type="button" style="background-color: transparent;" onclick="deletProject(this.id)">Cancel</button>
                             <button type="submit" style="background-color: rgb(18, 145, 18);">Accept</button>
@@ -54,7 +51,6 @@
                     </div>
                 </form>
             </dialog>
-
             <header>
                 <h2>Users</h2>
                 <div>
@@ -166,13 +162,12 @@
                             <input name="projectDate" type="date" name="finishDate"></input>
                         </div>
                         <div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
-                            <button id="cancel-btn" type="button" style="background-color: transparent;">Cancel</button>
-                            <button type="submit" style="background-color: rgb(18, 145, 18);">Accept</button>
+                            <button style="background-color: transparent;">Cancel</button>
+                            <button style="background-color: rgb(18, 145, 18);">Accept</button>
                         </div>
                     </div>
                 </form>
             </dialog>
-
             <header>
                 <h2>Projects</h2>
                 <div style="display: flex; align-items: center; cursor: pointer;">
@@ -181,11 +176,35 @@
                     <button id="new-project-btn"><span class="material-icons-round">add_circle</span>New
                         Project</button>
                 </div>
-
-
             </header>
             <div id="projects-list">
-                
+                <div id="default-card" class="project-card">
+                    <div class="card-header" id="default-project">
+                        <p class="project-icon">HC</p>
+                        <div>
+                            <h5>Sample Name</h5>
+                            <h6>This will be deleted when you create a new project</h6>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-property">
+                            <p style="color: gray;">Status</p>
+                            <p>Active</p>
+                        </div>
+                        <div class="card-property">
+                            <p style="color: gray;">Role</p>
+                            <p>Active</p>
+                        </div>
+                        <div class="card-property">
+                            <p style="color: gray;">Cost</p>
+                            <p>Active</p>
+                        </div>
+                        <div class="card-property">
+                            <p style="color: gray;">Estimated Progress</p>
+                            <p>Active</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="page" id="project-details" style="display: none;">
@@ -196,33 +215,30 @@
                         <div class="form-field-container">
                             <label><span class="material-icons-round">apartment</span>Name</label>
                             <input name="projectName" type="text" placeholder="What's the name of your project?">
+                            <input data-edit-project-info='name' name="projectName" type="text" placeholder="What's the name of your project?">
                             <p id="nameTip"
                                 style="color: gray; font-size: var(--font-sm); margin-top: 5px; font-style: italic;">
                                 TIP:
-                                Give it a short name</p>
-                            <p id="nameInUse"
-                                style="color: rgb(255, 0, 0); font-size: var(--font-sm); margin-top: 5px; display: none;">
-                                Name already in use</p>
-                            <p id="nameIsShort"
-                                style="color: rgb(255, 0, 0); font-size: var(--font-sm); margin-top: 5px; display: none;">
-                                Name is very short</p>
+@@ -235,11 +235,11 @@ <h2>Edit Project Details</h2>
                         </div>
                         <div class="form-field-container">
                             <label><span class="material-icons-round">subject</span>Description</label>
                             <textarea name="projectDesc" cols="30" rows="5"
+                            <textarea data-edit-project-info='description' name="projectDesc" cols="30" rows="5"
                                 placeholder="Give your project a nice description! So people is jealous about it."></textarea>
                         </div>
                         <div class="form-field-container">
                             <label><span class="material-icons-round">person</span>Type</label>
+                            <label><span data-edit-project-info='projectType' class="material-icons-round">person</span>Type</label>
                             <select name="projectType">
                                 <option>Architectural</option>
                                 <option>Structural</option>
-                                <option>MEPF Services</option>
-                            </select>
+@@ -248,7 +248,7 @@ <h2>Edit Project Details</h2>
                         </div>
                         <div class="form-field-container">
                             <label><span class="material-icons-round">work_history</span>Status</label>
                             <select name="projectStatus">
+                            <select name="projectStatus" data-edit-project-info='status'>
                                 <option>Pending</option>
                                 <option>Active</option>
                                 <option>Finished</option>
@@ -233,11 +249,11 @@
                                 <span class="material-icons-round">calendar_month</span>
                                 Finish Date
                             </label>
-                            <input data-edit-project-info="finish-date" name="projectDate" type="date" name="finishDate"></input>
+                            <input name="projectDate" type="date" name="finishDate"></input>
                         </div>
                         <div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
-                            <button id="cancel-btn" type="button" style="background-color: transparent;">Cancel</button>
-                            <button type="submit" style="background-color: rgb(18, 145, 18);">Accept</button>
+                            <button style="background-color: transparent;">Cancel</button>
+                            <button style="background-color: rgb(18, 145, 18);">Accept</button>
                         </div>
                     </div>
                 </form>
@@ -260,7 +276,6 @@
                             <p data-project-info = "Cdesc" >Community Hospital</p>
                         </div>
                         <div class="dashboard-project-detail">
-
                             <div class="dashboard-card-property">
                                 <p style="color: gray;">Status</p>
                                 <p data-project-info = "status">Active</p>
@@ -281,9 +296,7 @@
                         <div class="dashboard-progress">
                             <div data-project-info = "progress" class="progress-fill">25%</div>
                             <div data-project-info = "id" style="display: none;"></div>
-
                         </div>
-
                     </div>
                     <div class="dashboard-card" style="flex-grow: 1;">To-do List</div>
                 </div>
@@ -293,5 +306,4 @@
     </main>
     <script type="module" src="./src/index.ts"></script>
 </body>
-
 </html>

@@ -157,15 +157,14 @@ if (importProjectsBtn) {
 const editProjectsBtn = document.getElementById("edit-projects-btn")
 if (editProjectsBtn) {
     editProjectsBtn.addEventListener("click", () => {
-<<<<<<< HEAD
-=======
+
         const form = document.getElementById("edit-project-form")
         showModal("edit-project-modal")
-        projectsManager.setupEditProjectModal ()
+        projectsManager.setupEditProjectModal()
         const currentProject = projectsManager.editProject()
         console.log(form)
         // console.log(currentProject)
->>>>>>> 86df2db899bd7fec4c6a2d2d39a429f8a70246d9
+
         
         showModal("edit-project-modal")
         document.addEventListener('DOMContentLoaded', function () {
