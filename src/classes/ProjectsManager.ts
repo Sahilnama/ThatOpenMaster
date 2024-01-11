@@ -1,35 +1,25 @@
-import { IProject, Project } from "./Project"
-import { v4 as uuidv4 } from "uuid";
+import { IProject, Project, projectStatus, projectType } from "./Project"
 let errorCode = 0;
 
 export class ProjectsManager {
-
     list: Project[] = []
-    id: string
     ui: HTMLElement
     currentProject: Project;
     constructor(container: HTMLElement) {
         this.ui = container
-        this.id = uuidv4()
     }
-
     newProject(data: IProject) {
         const projectNames = this.list.map((project) => {
             return project.Name
         })
-
         const nameInUse = projectNames.includes(data.Name)
-
         if (nameInUse) {
             console.log(nameInUse)
             errorCode = 1
             throw new Error(`nameInUse`)
             // return "nameInUse"
-
         }
-
         const nameIsShort = data.Name.length <= 5
-
         if (nameIsShort) {
             throw new Error(`nameIsShort`)
         }
@@ -41,23 +31,19 @@ export class ProjectsManager {
             projectsPage.style.display = "none"
             detailsPage.style.display = "flex"
             this.setDetailsPage(project)
+            this.currentProject = project
         })
 
         this.ui.append(project.ui)
         this.list.push(project)
         return project
-
-
     }
-
-
     getInitials(name: string): string {
         const nameArray = name.split(" ")
         const firstNameIn = nameArray[0].charAt(0).toUpperCase()
         const lastNameIn = nameArray[nameArray.length - 1].charAt(0).toUpperCase()
         return firstNameIn + lastNameIn
     }
-
     setDetailsPage(project: Project) {
         const detailsPage = document.getElementById("project-details")
         if (!detailsPage) { return }
@@ -72,7 +58,6 @@ export class ProjectsManager {
         const finishDate = detailsPage.querySelector("[data-project-info='finish-date']")
         const progress = detailsPage.querySelector("[data-project-info='progress']") //to be modified later
         const id = detailsPage.querySelector("[data-project-info='id']") 
-
         if (name) { name.textContent = project.Name }
         if (desc) { desc.textContent = project.Description }
         if (initials) { initials.textContent = this.getInitials(project.Name) }
@@ -85,7 +70,6 @@ export class ProjectsManager {
         if (progress) { progress.textContent = `${project.progress}` } //to be modified later
         if (id) { id.textContent = `${project.id}` } 
     }
-
     getProject(id: string) {
         const project = this.list.find((project) => {
             return project.id === id
@@ -98,63 +82,23 @@ export class ProjectsManager {
         })
         return project
     }
-
-    deleteProject(id: string) {
+    deletProject(id: string) {
         const project = this.getProject(id)
         if (!project) { return }
         project.ui.remove()
         const remaining = this.list.filter((project) => {
             return project.id !== id
         })
-
         this.list = remaining
     }
-    
-    setEditForm() {
-        const editForm = document.getElementById("edit-project-form");
-        const currentProject = document.querySelector(".main-page-content") as HTMLElement;
-    
-        if (!editForm || !currentProject) {
-            return;
-        }
-        // all the form parameters
-        const name = editForm.querySelector("[data-edit-project-info='name']") as HTMLInputElement;
-        const desc = editForm.querySelector("[data-edit-project-info='desc']") as HTMLInputElement;
-        const type = editForm.querySelector("[data-edit-project-info='type']") as HTMLInputElement;
-        const status = editForm.querySelector("[data-edit-project-info='status']") as HTMLInputElement;
-        const finishDate = editForm.querySelector("[data-edit-project-info='finish-date']") as HTMLInputElement;
 
-        //all current project parameters
-        const projectName = currentProject.querySelector("[data-project-info='Cname']") as HTMLElement;
-        const projectDesc = currentProject.querySelector("[data-project-info='Cdesc']") as HTMLElement;
-        const projectType = currentProject.querySelector("[data-project-info='type']") as HTMLElement;
-        const projectStatus = currentProject.querySelector("[data-project-info='status']") as HTMLElement;
-        const projectDate = currentProject.querySelector("[data-project-info='Cname']") as HTMLElement;
+    editProject() {
+        const currentProject = this.ui
+        // console.log(currentProject.innerHTML)
+        console.log(currentProject)
 
-        console.log(editForm);
-        console.log(currentProject);
-        console.log(projectName.textContent);
-        console.log(projectDesc.textContent);
-        console.log(projectType);
-    
-        if (name && projectName) {
-            name.value = projectName.textContent as string;
-        }
-        if (desc && projectDesc) {
-            desc.textContent = projectDesc.textContent as string;
-            console.log("working")
-            console.log(this.ui)
-
-        }
-        // /* if (type && projectType) {
-        //     type.innerText = projectType.innerText 
-        //     console.log(type);
-        // } */
-
-        //Other parameters neede to be set later for editing.
-        
+        return currentProject;
     }
-
     totalProjectCost() {
         const totalCost: number = this.list.reduce(
             (sumOfCost, currentProject) => sumOfCost + currentProject.cost,
@@ -162,9 +106,7 @@ export class ProjectsManager {
         )
         return totalCost
     }
-
     exportToJSON(fileName: string = "projects") {
-
         function replacer(key, value) {
             // Filtering out properties
             if (key === "ui") {
@@ -172,7 +114,6 @@ export class ProjectsManager {
             }
             return value;
         }
-
         const json = JSON.stringify(this.list, replacer, 2)
         const blob = new Blob([json], { type: 'application/json' })
         const url = URL.createObjectURL(blob)
@@ -195,10 +136,8 @@ export class ProjectsManager {
                 try {
                     this.newProject(project)
                 } catch (error) {
-
                 }
             }
-
         })
         input.addEventListener('change', () => {
             const filesList = input.files
@@ -209,34 +148,93 @@ export class ProjectsManager {
     }
 
 
+    setupEditProjectModal () {
+        const editModal = document.getElementById("edit-project-modal")
+        if (!editModal) {return}
+        console.log("Selecting name...")
+        console.log(editModal.querySelector("[data-edit-project-info='name']"))
+        const name = editModal.querySelector("[data-edit-project-info='name']") as HTMLInputElement
+        if (name) { name.value =  this.currentProject.Name }
+        const description = editModal.querySelector("[data-edit-project-info='description']") as HTMLInputElement
+        if (description) { description.value =  this.currentProject.Description }
+
+        const status = editModal.querySelector("[data-edit-project-info='status']") as HTMLInputElement
+        if (status) { status.value = this.currentProject.Status }
+
+        const userRole = editModal.querySelector("[data-edit-project-info='projectType']") as HTMLInputElement
+        if (userRole) { userRole.value = this.currentProject.Type }
+
+        const progress = editModal.querySelector("[data-edit-project-info='progress']") as HTMLInputElement
+        if (progress) { progress.value = this.currentProject.progress*100 + '%' }
+
+
+
+        const finishDate = editModal.querySelector("[data-edit-project-info='finishDate']") as HTMLInputElement
+        if (finishDate) { finishDate.value = (new Date(this.currentProject.FinishDate)).toLocaleDateString('en-CA', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          })}
+
+
+        const cost = editModal.querySelector("[data-edit-project-info='cost']") as HTMLInputElement
+        if (cost) { 
+            cost.textContent = '$ ' + this.currentProject.cost
+            cost.value = '$ ' + this.currentProject.cost 
+        }
+
+
+        const editProjectForm = document.getElementById("edit-project-form")
+        if (editProjectForm && editProjectForm instanceof HTMLFormElement) {
+            console.log("Listening for submit...")
+            editProjectForm.addEventListener("submit", (e) => {
+
+                console.log("event listener fired")
+                e.preventDefault()
+                const editFormData = new FormData(editProjectForm)
+                console.log("Cost:")
+
+                console.log( editFormData.get("cost"))
+                try {
+                const projectData: IProject = {
+                    Name: editFormData.get("Name") as string,
+                    Description: editFormData.get("Description") as string,
+                    Status: editFormData.get("Status") as projectStatus,
+                    Type: editFormData.get("Type") as projectType,
+                    FinishDate: new Date(editFormData.get("finishDate") as string),
+
+
+
+                  };
+
+
+                    this.currentProject.updateProject(projectData)
+                    this.currentProject.replaceProjectById(this.list)
+                    this.setDetailsPage(this.currentProject)
+
+
+                }
+                catch (err) {
+                    alert(err)
+                }
+
+            })
+        }
+
+
+    }
+
+
+
 }
 
-/* export class ProjectdetailsManager {
 
+
+
+
+/* export class ProjectdetailsManager {
     ui: HTMLElement
-    constructor(container: HTMLElement) {
-        this.ui = container
-    }
     editProject() {
         console.log(this.ui)
-
-    }
-
-    setEditForm(){
-        const editForm = document.getElementById("edit-project-modal")
-        const projectsListUI = this.ui
-        const currentProjectroject = projectsListUI
-        if(!editForm){ return}
-        
-        const name = editForm.querySelector(
-            "[data-edit-project-info='Ename']"
-          ) as HTMLInputElement;
-          console.log(editForm)
-        
-        //   console.log(currentProject?.querySelector("data-project-info='Cname'"))
-          if (name) {
-            // name.value = currentProject?.getAttribute("data-project-info='Cname'") as string
-            console.log(projectsListUI)
-          }
     }
 } */

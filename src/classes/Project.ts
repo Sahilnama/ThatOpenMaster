@@ -11,175 +11,117 @@ export interface IProject {
     FinishDate: Date
 }
 
-export class Project implements IProject {
-    //parameters for IProject
-    Name: string
-    Description: string
-    Status: projectStatus
-    Type: projectType
-    FinishDate: Date
+export class Project implements IProject{
+  //parameters for IProject
+  Name: string
+  Description: string
+  Status: projectStatus
+  Type: projectType
+  FinishDate: Date
+  //parameters for Class internal for UI manipulation
+  Initials: string
+  ui: HTMLDivElement
+  cost: number = 0
+  progress: number = 0
+  id: string
+  getInitial(name: string): string {
+      const nameArray = name.split(" ")
+      const firstNameIn = nameArray[0].charAt(0).toUpperCase()
+      const lastNameIn = nameArray[nameArray.length - 1].charAt(0).toUpperCase()
+      return firstNameIn + lastNameIn
+  }
 
-    //parameters for Class internal for UI manipulation
+  updateProject(data: IProject) {
 
-    Initials: string
-    ui: HTMLDivElement
-    cost: number = 0
-    progress: number = 0
-    id: string
+      for (const key in data) {
+        this[key] = data[key]
+      }
+      this.Initials = this.getInitial(this.Name)
+      this.setUI
+  }
 
-    getInitial(name: string): string {
-        const nameArray = name.split(" ")
-        const firstNameIn = nameArray[0].charAt(0).toUpperCase()
-        const lastNameIn = nameArray[nameArray.length - 1].charAt(0).toUpperCase()
-        return firstNameIn + lastNameIn
-    }
+  replaceProjectById(projectList) {
+      const index = projectList.findIndex(project => project.id === this.id);
 
-    updateProject(data: IProject) {
-    
-        for (const key in data) {
+      if (index !== -1) {
+        // If the project with the given id is found, replace it with the new project
+        projectList[index] = this;
+        projectList[index].setUI()
+      } else {
+        // If the project is not found, you may want to push the new project to the list
+        //projectList.push(newProject);
+      }
+  }
+
+  constructor(data: IProject) {
+      /* this.Name = data.Name
+      this.Description = data.Description
+      this.Status = data.Status
+      this.Type = data.Type
+      this.FinishDate = data.FinishDate */
+      // OR a better way is to user for in loop like below
+      for (const key in data) {
           this[key] = data[key]
-        }
-        this.Initials = this.getInitial(this.Name)
-        this.setUI
-    }
-
-    replaceProjectById(projectList) {
-        const index = projectList.findIndex(project => project.id === this.id);
+      }
+      //Choosing default date one year from today in case user do not provide any date.
+      const defaultDate = new Date();
+      defaultDate.setFullYear(defaultDate.getFullYear() + 1)
+      const dateInput = data.FinishDate.toDateString()
+      if (dateInput == "Invalid Date") {
+          // If not, set the value to the default date
+          this.FinishDate = defaultDate
+          console.log(data.FinishDate)
+      }
+      this.id = uuidv4()
+      this.Initials = this.getInitial(this.Name)
+      this.setUI() // Fn to create a UI element when form is filled
+  }
+  pickColor() {
+      // Array containing colors 
+      const colors = [
+          '#06C270', '#772CB3', '#6A35FF',
+          '#EE4D37', '#F08D32', '#144CC7'
+      ];
+      // selecting random color 
+      var random_color = colors[(Math.floor(
+          Math.random() * colors.length))];
+      return random_color;
+  }
+  setUI() {
+      if (this.ui) { return }
+      this.ui = document.createElement("div")
+      this.ui.className = "project-card"
+      const bgc = this.pickColor();
+      this.ui.innerHTML = `
       
-        if (index !== -1) {
-          // If the project with the given id is found, replace it with the new project
-          projectList[index] = this;
-          projectList[index].setUI()
-        } else {
-          // If the project is not found, you may want to push the new project to the list
-          //projectList.push(newProject);
-        }
-    }
-
-    constructor(data: IProject) {
-        /* this.Name = data.Name
-        this.Description = data.Description
-        this.Status = data.Status
-        this.Type = data.Type
-        this.FinishDate = data.FinishDate */
-        // OR a better way is to user for in loop like below
-        for (const key in data) {
-            this[key] = data[key]
-        }
-
-        //Choosing default date one year from today in case user do not provide any date.
-
-        const defaultDate = new Date();
-        defaultDate.setFullYear(defaultDate.getFullYear() + 1)
-        const dateInput = data.FinishDate.toDateString()
-
-        if (dateInput == "Invalid Date") {
-            // If not, set the value to the default date
-            this.FinishDate = defaultDate
-            console.log(data.FinishDate)
-        }
-
-        this.id = uuidv4()
-        this.Initials = this.getInitial(this.Name)
-        this.setUI() // Fn to create a UI element when form is filled
-
-
-    }
-
-    pickColor() {
-
-        // Array containing colors 
-        const colors = [
-            '#06C270', '#772CB3', '#6A35FF',
-            '#EE4D37', '#F08D32', '#144CC7'
-        ];
-
-        // selecting random color 
-        var random_color = colors[(Math.floor(
-            Math.random() * colors.length))];
-
-        return random_color;
-    }
-
-    setUI() {
-        if (this.ui) { return }
-        this.ui = document.createElement("div")
-        this.ui.className = "project-card"
-        const bgc = this.pickColor();
-
-        this.ui.innerHTML = `
-        
-        <div class="card-header">
-            <p class="project-icon" style =" background-color: ${bgc};">${this.Initials} </p>
-            <div>
-                <h5 id="" >${this.Name}</h5>
-                <h6>${this.Description}</h6>
-            </div>
-        </div>
-        <div class="card-content">
-            <div class="card-property">
-                <p style="color: gray;">Status</p>
-                <p>${this.Status}</p>
-            </div>
-            <div class="card-property">
-                <p style="color: gray;">Type</p>
-                <p>${this.Type}</p>
-            </div>
-            <div class="card-property">
-                <p style="color: gray;">Cost</p>
-                <p>$${this.cost}</p>
-            </div>
-            <div class="card-property">
-                <p style="color: gray;">Estimated Progress</p>
-                <p>${this.progress}</p>
-            </div>
-            <div class="card-id" style="color: gray; display: none">
-                 <p>${this.id}</p>
-            </div>
-        </div>
-    `
-
-    }
-
-    // setFormUI() {
-    //     if (this.ui) { return }
-    //     this.ui = document.createElement("div")
-    //     this.ui.className = "project-card"
-    //     const bgc = this.pickColor();
-
-    //     this.ui.innerHTML = `
-        
-    //     <div class="card-header">
-    //         <p class="project-icon" style =" background-color: ${bgc};">${this.Initials} </p>
-    //         <div>
-    //             <h5>${this.Name}</h5>
-    //             <h6>${this.Description}</h6>
-    //         </div>
-    //     </div>
-    //     <div class="card-content">
-    //         <div class="card-property">
-    //             <p style="color: gray;">Status</p>
-    //             <p>${this.Status}</p>
-    //         </div>
-    //         <div class="card-property">
-    //             <p style="color: gray;">Type</p>
-    //             <p>${this.Type}</p>
-    //         </div>
-    //         <div class="card-property">
-    //             <p style="color: gray;">Cost</p>
-    //             <p>$${this.cost}</p>
-    //         </div>
-    //         <div class="card-property">
-    //             <p style="color: gray;">Estimated Progress</p>
-    //             <p>${this.progress}</p>
-    //         </div>
-    //         <div class="card-id" style="color: gray; display: none">
-    //              <p>${this.id}</p>
-    //         </div>
-    //     </div>
-    // `
-
-    // }
-
-    
+      <div class="card-header">
+          <p class="project-icon" style =" background-color: ${bgc};">${this.Initials} </p>
+          <div>
+              <h5>${this.Name}</h5>
+              <h6>${this.Description}</h6>
+          </div>
+      </div>
+      <div class="card-content">
+          <div class="card-property">
+              <p style="color: gray;">Status</p>
+              <p>${this.Status}</p>
+          </div>
+          <div class="card-property">
+              <p style="color: gray;">Type</p>
+              <p>${this.Type}</p>
+          </div>
+          <div class="card-property">
+              <p style="color: gray;">Cost</p>
+              <p>$${this.cost}</p>
+          </div>
+          <div class="card-property">
+              <p style="color: gray;">Estimated Progress</p>
+              <p>${this.progress}</p>
+          </div>
+          <div class="card-id" style="color: gray; display: none">
+               <p>${this.id}</p>
+          </div>
+      </div>
+  `
+  }
 }
