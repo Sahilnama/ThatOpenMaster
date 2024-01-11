@@ -28,6 +28,17 @@ function closeModal(id: string) {
 }
 const projectsListUI = document.getElementById("projects-list") as HTMLElement
 const projectsManager = new ProjectsManager(projectsListUI)
+
+
+const defaultProjectData: IProject = {
+  Name: "Sample Project",
+  Description: "This will be deleted when you create a new project",
+  Type: "MEP Services",
+  Status: "Active",
+  FinishDate: new Date()
+
+}
+const defaultProject = projectsManager.newProject(defaultProjectData)
 // Function to open project creation form
 const newProjectBtn = document.getElementById("new-project-btn")
 if (newProjectBtn) {
@@ -114,16 +125,14 @@ if (editProjectsBtn) {
   editProjectsBtn.addEventListener("click", () => {
     const form = document.getElementById("edit-project-form")
     showModal("edit-project-modal")
-    projectsManager.setupEditProjectModal()
-    const currentProject = projectsManager.editProject()
+    // projectsManager.setupEditProjectModal()
+    // const currentProject = projectsManager.editProject()
     console.log(form)
     // console.log(currentProject)
 
 
   })
 }
-
-
 
 const projectsBtn = document.getElementById("projects-btn")
 projectsBtn?.addEventListener("click", () => {
