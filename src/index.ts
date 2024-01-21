@@ -126,8 +126,8 @@ if (editProjectsBtn) {
     const form = document.getElementById("edit-project-form")
     showModal("edit-project-modal")
     projectsManager.setupEditProjectModal()
-    const currentProject = projectsManager.editProject()
-    console.log(form)
+    // const currentProject = projectsManager.editProject()
+    // console.log(form)
     // console.log(currentProject)
 
 
