@@ -1,3 +1,5 @@
+import * as THREE from "three"
+import{OrbitControls} from "three/examples/jsm/controls/OrbitControls"
 import { IProject, projectStatus, projectType } from "./classes/Project"
 import { ProjectsManager } from "./classes/ProjectsManager"
 // import { ProjectdetailsManager } from "./classes/ProjectsManager"
@@ -29,23 +31,12 @@ function closeModal(id: string) {
 const projectsListUI = document.getElementById("projects-list") as HTMLElement
 const projectsManager = new ProjectsManager(projectsListUI)
 
-
-const defaultProjectData: IProject = {
-  Name: "Sample Project",
-  Description: "This will be deleted when you create a new project",
-  Type: "MEP Services",
-  Status: "Active",
-  FinishDate: new Date()
-
-}
-const defaultProject = projectsManager.newProject(defaultProjectData)
 // Function to open project creation form
 const newProjectBtn = document.getElementById("new-project-btn")
 if (newProjectBtn) {
   newProjectBtn.addEventListener("click", () => {
     showModal("new-project-modal")
     const defaultProject = document.getElementById("default-card") as HTMLElement // this is used to hide the default project card
-    defaultProject.style.display = "none"; // to be modified later if required
   })
 }
 else {
@@ -142,3 +133,63 @@ projectsBtn?.addEventListener("click", () => {
   projectsPage.style.display = "flex"
   detailsPage.style.display = "none"
 })
+
+/* //Three.JS viewer
+
+const scene = new THREE.Scene()
+
+const viewerContainer = document.getElementById("viewer-container") as HTMLElement
+const containerDimensions = viewerContainer.getBoundingClientRect()
+const aspectRatio = containerDimensions.width / containerDimensions.height
+const camera = new THREE.PerspectiveCamera(75, aspectRatio)
+camera.position.z = 5
+
+const renderer = new THREE.WebGLRenderer()
+viewerContainer.append(renderer.domElement)
+renderer.setSize(containerDimensions.width, containerDimensions.height)
+// renderer.setSize(containerDimensions.width/2, containerDimensions.height/2)
+
+
+const boxGeometry = new THREE.BoxGeometry()
+const material = new THREE.MeshStandardMaterial()
+const cube = new THREE.Mesh(boxGeometry, material)
+
+const directionalLight = new THREE.DirectionalLight()
+const ambientLight = new THREE.AmbientLight()
+
+scene.add(cube, directionalLight, ambientLight)
+
+renderer.render(scene, camera) */
+
+//ThreeJS viewer
+const scene = new THREE.Scene()
+
+const viewerContainer = document.getElementById("viewer-container") as HTMLElement
+
+const containerDimensions = viewerContainer.getBoundingClientRect()
+const aspectRatio = containerDimensions.width / containerDimensions.height
+const camera = new THREE.PerspectiveCamera(75, aspectRatio)
+camera.position.z = 5
+
+const renderer = new THREE.WebGLRenderer()
+viewerContainer.append(renderer.domElement)
+renderer.setSize(containerDimensions.width, containerDimensions.height)
+
+const boxGeometry = new THREE.BoxGeometry()
+const material = new THREE.MeshStandardMaterial()
+const cube = new THREE.Mesh(boxGeometry, material)
+
+const directionalLight = new THREE.DirectionalLight()
+const ambientLight = new THREE.AmbientLight()
+ambientLight.intensity = 0.5 // To create shadow effect
+
+scene.add(cube, directionalLight, ambientLight)
+
+const cameraControl = new OrbitControls(camera, viewerContainer)
+
+function renderScene(){ 
+  renderer.render(scene, camera)
+  requestAnimationFrame(renderScene) //this is a global function to take snap of frame
+} //this is an infinite loop to keep taking snaps as per user intraction
+
+renderScene()

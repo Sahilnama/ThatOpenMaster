@@ -7,7 +7,17 @@ export class ProjectsManager {
     currentProject: Project;
     constructor(container: HTMLElement) {
         this.ui = container
+
+        const project = this.newProject({
+            Name: "Default Project",
+            Description: "This is sample",
+            Status:"Active",
+            Type:"MEP Services",
+            FinishDate:new Date()
+        })
+        project.ui.click()
     }
+    
     newProject(data: IProject) {
         const projectNames = this.list.map((project) => {
             return project.Name
