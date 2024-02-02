@@ -1,7 +1,9 @@
 import * as THREE from "three"
+import {GUI} from "three/examples/jsm/libs/lil-gui.module.min"
 import{OrbitControls} from "three/examples/jsm/controls/OrbitControls"
 import { IProject, projectStatus, projectType } from "./classes/Project"
 import { ProjectsManager } from "./classes/ProjectsManager"
+import { transform } from "esbuild"
 // import { ProjectdetailsManager } from "./classes/ProjectsManager"
 /* const   showModal = () =>{
     const modal = document.getElementById("new-project-modal")
@@ -166,14 +168,22 @@ const scene = new THREE.Scene()
 
 const viewerContainer = document.getElementById("viewer-container") as HTMLElement
 
-const containerDimensions = viewerContainer.getBoundingClientRect()
-const aspectRatio = containerDimensions.width / containerDimensions.height
-const camera = new THREE.PerspectiveCamera(75, aspectRatio)
+const camera = new THREE.PerspectiveCamera(75)
 camera.position.z = 5
 
-const renderer = new THREE.WebGLRenderer()
+const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true})
 viewerContainer.append(renderer.domElement)
-renderer.setSize(containerDimensions.width, containerDimensions.height)
+
+function resizeViewer(){
+  const containerDimensions = viewerContainer.getBoundingClientRect()
+  renderer.setSize(containerDimensions.width, containerDimensions.height)
+  const aspectRatio = containerDimensions.width / containerDimensions.height
+  camera.aspect = aspectRatio
+  camera.updateProjectionMatrix()
+}
+
+window.addEventListener("resize", resizeViewer)
+resizeViewer()
 
 const boxGeometry = new THREE.BoxGeometry()
 const material = new THREE.MeshStandardMaterial()
@@ -188,8 +198,42 @@ scene.add(cube, directionalLight, ambientLight)
 const cameraControl = new OrbitControls(camera, viewerContainer)
 
 function renderScene(){ 
+  directionalLightHelper.update()
   renderer.render(scene, camera)
   requestAnimationFrame(renderScene) //this is a global function to take snap of frame
+  // console.log(directionalLightHelper.position.x)
 } //this is an infinite loop to keep taking snaps as per user intraction
 
+
+const axes = new THREE.AxesHelper()
+const grid = new THREE.GridHelper()
+grid.material.transparent = true
+grid.material.opacity = 0.4
+grid.material.color = new THREE.Color("#808080")
+scene.add(axes,grid)
+
+const gui = new GUI()
+const  cubePosition= gui.addFolder("Cube position")
+
+cubePosition.add(cube.position, "x", -5, 5, .5)
+cubePosition.add(cube.position, "y", -5, 5, .5)
+cubePosition.add(cube.position, "z", -5, 5, .5)
+
+const cubeScale = gui.addFolder("Cube Scale")
+cubeScale.add(cube.scale, "x", 1, 5, .5)
+cubeScale.add(cube.scale, "y", 1, 5, .5)
+cubeScale.add(cube.scale, "z", 1, 5, .5)
+
+const cubeVisibility = gui.addFolder("Cube visibility")
+cubeVisibility.add(cube, "visible")
+cubeVisibility.addColor(cube.material, "color")
+// cube.matrixAutoUpdate = false
+
+const directionalLightHelper = new THREE.DirectionalLightHelper( directionalLight, 5 );
+scene.add( directionalLightHelper );
+cubeVisibility.add(directionalLight.position, "x", -5, 5, .5).name("Light-X")
+cubeVisibility.add(directionalLight.position, "y", -5, 5, .5).name("Light-Y")
+cubeVisibility.add(directionalLight.position, "z", -5, 5, .5).name("Light-Z")
+cubeVisibility.add(directionalLight, "intensity", -10, 10, .5)
+cubeVisibility.addColor(directionalLight, "color")
 renderScene()
