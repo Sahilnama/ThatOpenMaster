@@ -1,6 +1,8 @@
 import * as THREE from "three"
 import {GUI} from "three/examples/jsm/libs/lil-gui.module.min"
 import{OrbitControls} from "three/examples/jsm/controls/OrbitControls"
+import{OBJLoader} from "three/examples/jsm/loaders/OBJLoader"
+import{MTLLoader} from "three/examples/jsm/loaders/MTLLoader"
 import { IProject, projectStatus, projectType } from "./classes/Project"
 import { ProjectsManager } from "./classes/ProjectsManager"
 import { transform } from "esbuild"
@@ -236,4 +238,19 @@ cubeVisibility.add(directionalLight.position, "y", -5, 5, .5).name("Light-Y")
 cubeVisibility.add(directionalLight.position, "z", -5, 5, .5).name("Light-Z")
 cubeVisibility.add(directionalLight, "intensity", -10, 10, .5)
 cubeVisibility.addColor(directionalLight, "color")
+  
+const objLoader = new OBJLoader()
+const mtlLoader = new MTLLoader()
+objLoader.load("../assets/Gear/Gear1.obj", (mesh) => {
+  scene.add(mesh)
+})
+
+mtlLoader.load("../assets/Gear/Gear1.mtl", (materials) => {
+  materials.preload()
+  objLoader.setMaterials(materials)
+})
+
+const light = new THREE.PointLight( 0xff0000, 1, 100 );
+light.position.set( 50, 50, 50 );
+scene.add( light );
 renderScene()
